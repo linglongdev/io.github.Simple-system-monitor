@@ -1,0 +1,29 @@
+version: "1"
+
+package:
+  id: io.github.Simple-system-monitor
+  name: Simple-system-monitor
+  version: 0.0.0.1
+  kind: app
+  description: |
+    Simple system monitor for Linux written in Qt
+
+command:
+  - /opt/apps/io.github.Simple-system-monitor/files/bin/SimpleSystemMonitor
+
+base: org.deepin.foundation/23.0.0
+runtime: org.deepin.Runtime/23.0.1
+
+sources:
+  - kind: git
+    url: https://github.com/onyazuka/Simple-system-monitor.git
+    version: master
+    commit: 271619017c4e80812a256ac463797571855a92d1
+
+build: |
+  cd /project/linglong/sources/Simple-system-monitor.git
+  git apply ../../../0001-install.patch
+  cp icons/icon.png icons/SimpleSystemMonitor.png
+  qmake -makefile PREFIX=${PREFIX} LIB_INSTALL_DIR=${PREFIX}/lib/${TRIPLET}
+  make -j$(nproc)
+  make install
